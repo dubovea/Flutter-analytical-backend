@@ -160,7 +160,7 @@ class ProductCard extends StatelessWidget {
                               },
                               onChangeEnd: (value) {
                                 productController.saveProductQuantity(
-                                    index, product, value);
+                                    index, product, value.toInt());
                               },
                             ),
                           ),

@@ -91,43 +91,4 @@ class Product extends Equatable {
   }
 
   String toJson() => json.encode(toMap());
-
-  @override
-  bool get stringify => true;
-
-  static List<Product> products = [
-    Product(
-        id: 1,
-        description:
-            'Pepsi — газированный безалкогольный напиток, производимый компанией PepsiCo. Создан в 1893 году Калебом Брэдхемом под названием «Напиток Брэда». В 1898 году переименован в Pepsi-Cola, а затем сокращён до Pepsi в 1961 году.',
-        name: 'PEPSI',
-        imageUrl:
-            'https://c.ndtvimg.com/2022-01/mg0fne68_pepsi_625x300_05_January_22.jpg?im=FeatureCrop,algorithm=dnn,width=620,height=350',
-        price: 2.99,
-        isRecommended: true,
-        isPopular: true,
-        category: 'Soft Drinks'),
-    Product(
-        id: 2,
-        description:
-            'Pepsi — газированный безалкогольный напиток, производимый компанией PepsiCo. Создан в 1893 году Калебом Брэдхемом под названием «Напиток Брэда». В 1898 году переименован в Pepsi-Cola, а затем сокращён до Pepsi в 1961 году.',
-        name: 'COCA COLA',
-        imageUrl:
-            'https://sun9-53.userapi.com/impg/tGWbpy5unaNqjDd473U0p4S9f9I2IjMMWkG5Ew/fN-67csrgZs.jpg?size=807x538&quality=95&sign=4bf42db3b10d9db46013d544847cdf88&type=album',
-        price: 1.44,
-        isRecommended: true,
-        isPopular: true,
-        category: 'Soft Drinks'),
-    Product(
-        id: 3,
-        description:
-            'Фа́нта — безалкогольный сильногазированный прохладительный напиток с цитрусовым вкусом; выпускается корпорацией Coca-Cola. Основной вариант вкуса — апельсиновый; в разных странах также выпускаются различные вкусовые варианты, например, в России по состоянию на 2021 год выпускаются вкусы апельсина, мангуавы, шоката.',
-        name: 'FANTA',
-        imageUrl:
-            'https://kupivody.ru/wp-content/uploads/2022/06/fantamango0355banka.jpeg',
-        price: 2.58,
-        isRecommended: true,
-        isPopular: false,
-        category: 'Soft Drinks'),
-  ];
 }
