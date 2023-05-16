@@ -41,16 +41,16 @@ class ProductScreen extends StatelessWidget {
                 )),
           ),
           Expanded(
-            child: ListView.builder(
+            child: Obx(() => ListView.builder(
                 itemCount: productController.products.length,
                 itemBuilder: (context, index) {
-                  return Obx(() => SizedBox(
-                        height: 210,
-                        child: ProductCard(
-                            index: index,
-                            product: productController.products[index]),
-                      ));
-                }),
+                  return SizedBox(
+                    height: 210,
+                    child: ProductCard(
+                        index: index,
+                        product: productController.products[index]),
+                  );
+                })),
           )
         ]),
       ),
@@ -112,16 +112,21 @@ class ProductCard extends StatelessWidget {
                           SizedBox(
                             width: 175,
                             child: Slider(
-                                min: 0,
-                                max: 25,
-                                divisions: 10,
-                                activeColor: Colors.black,
-                                inactiveColor: Colors.black12,
-                                value: product.price,
-                                onChanged: (value) {
-                                  productController.updateProductPrice(
-                                      index, product, value);
-                                }),
+                              min: 0,
+                              max: 25,
+                              divisions: 10,
+                              activeColor: Colors.black,
+                              inactiveColor: Colors.black12,
+                              value: product.price,
+                              onChanged: (value) {
+                                productController.updateProductPrice(
+                                    index, product, value);
+                              },
+                              onChangeEnd: (value) {
+                                productController.saveProductPrice(
+                                    index, product, value);
+                              },
+                            ),
                           ),
                           Text('\$${product.price.toStringAsFixed(1)}',
                               style: const TextStyle(
@@ -143,16 +148,21 @@ class ProductCard extends StatelessWidget {
                           SizedBox(
                             width: 175,
                             child: Slider(
-                                min: 0,
-                                max: 100,
-                                divisions: 10,
-                                activeColor: Colors.black,
-                                inactiveColor: Colors.black12,
-                                value: product.quantity.toDouble(),
-                                onChanged: (value) {
-                                  productController.updateProductQuantity(
-                                      index, product, value.toInt());
-                                }),
+                              min: 0,
+                              max: 100,
+                              divisions: 10,
+                              activeColor: Colors.black,
+                              inactiveColor: Colors.black12,
+                              value: product.quantity.toDouble(),
+                              onChanged: (value) {
+                                productController.updateProductQuantity(
+                                    index, product, value.toInt());
+                              },
+                              onChangeEnd: (value) {
+                                productController.saveProductQuantity(
+                                    index, product, value);
+                              },
+                            ),
                           ),
                           Text('${product.quantity.toInt()}',
                               style: const TextStyle(

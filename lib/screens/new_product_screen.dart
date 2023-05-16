@@ -1,5 +1,6 @@
 import 'package:analytical_ecommerce_back/controllers/controllers.dart';
 import 'package:analytical_ecommerce_back/models/models.dart';
+import 'package:analytical_ecommerce_back/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,6 +8,8 @@ import 'package:image_picker/image_picker.dart';
 class NewProductScreen extends StatelessWidget {
   NewProductScreen({super.key});
   final ProductController productController = Get.find();
+  StorageService storage = StorageService();
+  DatabaseService database = DatabaseService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,7 +40,18 @@ class NewProductScreen extends StatelessWidget {
                                         const SnackBar(
                                             content: Text(
                                                 'Изображение не выбрано')));
+                                    return;
                                   }
+
+                                  await storage.uploadImage(_image);
+                                  String imageUrl =
+                                      await storage.getDownloadURL(_image.name);
+                                  productController.newProduct.update(
+                                      'imageUrl', (_) => imageUrl,
+                                      ifAbsent: () => imageUrl);
+
+                                  print(
+                                      productController.newProduct['imageUrl']);
                                 },
                                 icon: const Icon(
                                   Icons.add_circle,
@@ -79,7 +93,23 @@ class NewProductScreen extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black),
                       onPressed: () {
-                        print(productController.newProduct);
+                        database.addProduct(
+                          Product(
+                            id: int.parse(productController.newProduct['id']),
+                            name: productController.newProduct['name'],
+                            category: productController.newProduct['category'],
+                            description:
+                                productController.newProduct['description'],
+                            imageUrl: productController.newProduct['imageUrl'],
+                            isRecommended:
+                                productController.newProduct['isRecommended'],
+                            isPopular:
+                                productController.newProduct['isPopular'],
+                            price: productController.newProduct['price'],
+                            quantity: productController.newProduct['quantity']
+                                .toInt(),
+                          ),
+                        );
                       },
                       child: const Text('Сохранить',
                           style: TextStyle(
