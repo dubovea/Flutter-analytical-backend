@@ -1,9 +1,13 @@
+import 'package:analytical_ecommerce_back/controllers/controllers.dart';
 import 'package:analytical_ecommerce_back/models/models.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class OrdersScreen extends StatelessWidget {
-  const OrdersScreen({super.key});
+  OrdersScreen({super.key});
+
+  final OrderController orderController = Get.put(OrderController());
 
   @override
   Widget build(BuildContext context) {
@@ -14,19 +18,23 @@ class OrdersScreen extends StatelessWidget {
         ),
         body: Column(children: [
           Expanded(
-            child: ListView.builder(
-                itemCount: Order.orders.length,
-                itemBuilder: (BuildContext context, index) {
-                  return OrderdCard(order: Order.orders[index]);
-                }),
+            child: Obx(
+              () => ListView.builder(
+                  itemCount: orderController.pendingOrders.length,
+                  itemBuilder: (BuildContext context, index) {
+                    return OrderdCard(order: orderController.pendingOrders[index]);
+                  }),
+            ),
           )
         ]));
   }
 }
 
 class OrderdCard extends StatelessWidget {
-  final Order order;
-  const OrderdCard({super.key, required this.order});
+  final Orders order;
+  OrderdCard({super.key, required this.order});
+
+  final OrderController orderController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -129,16 +137,34 @@ class OrderdCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                (order.isAccepted
+                    ? ElevatedButton(
+                        onPressed: () {
+                          orderController.updateOrder(
+                              order, 'isDelivered', !order.isDelivered);
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            minimumSize: const Size(150, 40)),
+                        child: const Text('Доставка',
+                            style: TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.bold)))
+                    : ElevatedButton(
+                        onPressed: () {
+                          orderController.updateOrder(
+                              order, 'isAccepted', !order.isAccepted);
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black,
+                            minimumSize: const Size(150, 40)),
+                        child: const Text('Принять',
+                            style: TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.bold)))),
                 ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        minimumSize: const Size(150, 40)),
-                    child: const Text('Принять',
-                        style: TextStyle(
-                            fontSize: 12, fontWeight: FontWeight.bold))),
-                ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      orderController.updateOrder(
+                          order, 'isCanceled', !order.isCanceled);
+                    },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                         minimumSize: const Size(150, 40)),
