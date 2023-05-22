@@ -8,6 +8,8 @@ class OrdersScreen extends StatelessWidget {
   OrdersScreen({super.key});
 
   final OrderController orderController = Get.put(OrderController());
+  final CategoriesController categoriesController =
+      Get.put(CategoriesController());
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +19,18 @@ class OrdersScreen extends StatelessWidget {
           title: const Text('Заказы'),
         ),
         body: Column(children: [
+          Container(
+              margin: const EdgeInsets.only(right: 20),
+              child: Align(
+                  alignment: Alignment.topRight,
+                  child: DropdownButtonExample())),
           Expanded(
             child: Obx(
               () => ListView.builder(
                   itemCount: orderController.pendingOrders.length,
                   itemBuilder: (BuildContext context, index) {
-                    return OrderdCard(order: orderController.pendingOrders[index]);
+                    return OrderdCard(
+                        order: orderController.pendingOrders[index]);
                   }),
             ),
           )
@@ -177,5 +185,46 @@ class OrderdCard extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+class DropdownButtonExample extends StatelessWidget {
+  DropdownButtonExample({super.key});
+  final CategoriesController categoriesController = Get.find();
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+        future: categoriesController.categories.value,
+        builder:
+            (BuildContext context, AsyncSnapshot<List<Category>> snapshot) {
+          if (snapshot.hasData) {
+            return DropdownButton<String>(
+              icon: const Icon(Icons.arrow_downward),
+              elevation: 16,
+              style: const TextStyle(color: Colors.deepPurple),
+              underline: Container(
+                height: 2,
+                color: Colors.deepPurpleAccent,
+              ),
+              onChanged: (String? value) {},
+              items: snapshot.data!
+                  .map<DropdownMenuItem<String>>((Category category) {
+                return DropdownMenuItem<String>(
+                  value: category.categoryName,
+                  child: Text(category.categoryName),
+                );
+              }).toList(),
+            );
+          }
+          if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          }
+          return const Center(
+            child: CircularProgressIndicator(
+              color: Colors.black,
+            ),
+          );
+        });
   }
 }
