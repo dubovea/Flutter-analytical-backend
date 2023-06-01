@@ -5,10 +5,12 @@ import 'package:get/get.dart';
 class CategoriesController extends GetxController {
   final DatabaseService database = DatabaseService();
   var categories = Future.value(<Category>[]).obs;
+  var categoriesProducts = Future.value(<Category>[]).obs;
 
   @override
   void onInit() {
     categories.value = database.getCategories();
+    categoriesProducts.value = database.getCategoriesProducts();
     super.onInit();
   }
 }

@@ -4,40 +4,40 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 
 class Category extends Equatable {
-  final String categoryId;
-  final String categoryName;
+  final String id;
+  final String name;
 
   const Category({
-    required this.categoryId,
-    required this.categoryName,
+    required this.id,
+    required this.name,
   });
 
   @override
   Category copyWith({
-    String? categoryId,
-    String? categoryName,
+    String? id,
+    String? name,
   }) {
     return Category(
-      categoryId: categoryId ?? this.categoryId,
-      categoryName: categoryName ?? this.categoryName,
+      id: id ?? this.id,
+      name: name ?? this.name,
     );
   }
 
   Map<String, dynamic> toMap() {
-    return {'categoryId': categoryId, 'categoryName': categoryName};
+    return {'id': id, 'name': name};
   }
 
   factory Category.fromSnapshot(DocumentSnapshot snapshot) {
     return Category(
-      categoryId: snapshot['categoryId'],
-      categoryName: snapshot['categoryName'],
+      id: snapshot['id'],
+      name: snapshot['name'],
     );
   }
 
   String toJson() => json.encode(toMap());
 
   List<Object?> get props => [
-        categoryId,
-        categoryName,
+        id,
+        name,
       ];
 }

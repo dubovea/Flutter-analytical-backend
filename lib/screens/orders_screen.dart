@@ -211,8 +211,8 @@ class DropdownButtonExample extends StatelessWidget {
               items: snapshot.data!
                   .map<DropdownMenuItem<String>>((Category category) {
                 return DropdownMenuItem<String>(
-                  value: category.categoryName,
-                  child: Text(category.categoryName),
+                  value: category.name,
+                  child: Text(category.name),
                 );
               }).toList(),
             );

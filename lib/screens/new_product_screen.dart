@@ -1,6 +1,7 @@
 import 'package:analytical_ecommerce_back/controllers/controllers.dart';
 import 'package:analytical_ecommerce_back/models/models.dart';
 import 'package:analytical_ecommerce_back/services/services.dart';
+import 'package:analytical_ecommerce_back/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -49,9 +50,6 @@ class NewProductScreen extends StatelessWidget {
                                   productController.newProduct.update(
                                       'imageUrl', (_) => imageUrl,
                                       ifAbsent: () => imageUrl);
-
-                                  print(
-                                      productController.newProduct['imageUrl']);
                                 },
                                 icon: const Icon(
                                   Icons.add_circle,
@@ -76,8 +74,14 @@ class NewProductScreen extends StatelessWidget {
                       'Наименование продукта', 'name', productController),
                   _buildTextFormField(
                       'Описание продукта', 'description', productController),
-                  _buildTextFormField(
-                      'Категория продукта', 'category', productController),
+                  Column(
+                    children: [
+                      SizedBox(
+                          height: 45,
+                          width: MediaQuery.of(context).size.width,
+                          child: DropdownCategories())
+                    ],
+                  ),
                   const SizedBox(height: 10),
                   _buildSlider('Цена', 'price', productController,
                       productController.price),
@@ -169,20 +173,30 @@ class NewProductScreen extends StatelessWidget {
               )),
         ),
         Expanded(
-          child: Slider(
-              min: 0,
-              max: 25,
-              divisions: 10,
-              activeColor: Colors.black,
-              inactiveColor: Colors.black12,
-              value: controllerValue ?? 0,
-              onChanged: (value) {
-                productController.newProduct.update(
-                  fieldName,
-                  (_) => value,
-                  ifAbsent: () => value,
-                );
-              }),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Slider(
+                  min: 0,
+                  max: 25,
+                  divisions: 10,
+                  activeColor: Colors.black,
+                  inactiveColor: Colors.black12,
+                  value: controllerValue ?? 0,
+                  onChanged: (value) {
+                    productController.newProduct.update(
+                      fieldName,
+                      (_) => value,
+                      ifAbsent: () => value,
+                    );
+                  }),
+              Text(productController.newProduct[fieldName].toString(),
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ))
+            ],
+          ),
         )
       ],
     );
